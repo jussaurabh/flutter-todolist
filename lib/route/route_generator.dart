@@ -8,9 +8,9 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => HomePage(title: 'Todozz'));
+        return MaterialPageRoute(builder: (_) => HomePage());
       case '/todo':
-        return MaterialPageRoute(builder: (_) => TodoPage(title: 'Todozz'));
+        return MaterialPageRoute(builder: (_) => TodoPage());
 
       default:
         return _errorRoute();

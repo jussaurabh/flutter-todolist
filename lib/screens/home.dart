@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/model/todo.dart';
+import 'package:todolist/widgets/change_theme_button.dart';
 import 'package:todolist/widgets/myappbar.dart';
+import 'package:todolist/widgets/todo_item.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
-  HomePage({Key? key, required this.title}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-
   List<Todo> todos = [
     Todo('test 1', 'some detail 1'),
     Todo('test 2', 'some detail 2'),
     Todo('test 3', 'some detail 4'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
+    Todo('test 4', 'some detail 3'),
     Todo('test 4', 'some detail 3'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: MyAppbar(title: widget.title),
-      appBar: AppBar(
-        title: Text('Todozz'),
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: MyAppbar(title: 'Todozz'),
       body: ListView.builder(
-        itemCount: todos.length,
-        itemBuilder: (context, index) {
-          return ListTile(title: Text(todos[index].title));
-        },
-      ),
+          itemCount: todos.length,
+          itemBuilder: (context, index) {
+            return TodoItem(title: todos[index].title);
+          },
+          padding:
+              const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 100)),
       floatingActionButton: Container(
         decoration: BoxDecoration(boxShadow: [
           BoxShadow(
