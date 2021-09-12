@@ -16,14 +16,23 @@ class MyApp extends StatelessWidget {
       builder: (context, _) {
         final themeProvider = Provider.of<ThemeProvider>(context);
 
-        return MaterialApp(
-          title: 'Todozz',
-          debugShowCheckedModeBanner: false,
-          themeMode: themeProvider.themeMode,
-          theme: MyThemes.lightTheme,
-          darkTheme: MyThemes.darkTheme,
-          initialRoute: '/',
-          onGenerateRoute: RouteGenerator.generateRoute,
+        return GestureDetector(
+          onTap: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus &&
+                currentFocus.focusedChild != null) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
+          },
+          child: MaterialApp(
+            title: 'Todozz',
+            debugShowCheckedModeBanner: false,
+            themeMode: themeProvider.themeMode,
+            theme: MyThemes.lightTheme,
+            darkTheme: MyThemes.darkTheme,
+            initialRoute: '/',
+            onGenerateRoute: RouteGenerator.generateRoute,
+          ),
         );
       },
     );

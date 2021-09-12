@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todolist/model/todo.dart';
 import 'package:todolist/provider/theme_provider.dart';
+import 'package:todolist/service/alert.service.dart';
 import 'package:todolist/service/todos.service.dart';
 import 'package:todolist/widgets/myappbar.dart';
 
@@ -15,6 +15,15 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final _formKey = GlobalKey<FormState>();
   final _todo = new TodoService();
+  FocusNode titleFocusNode = FocusNode();
+  AlertService alertService = AlertService();
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    titleFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +47,8 @@ class _TodoPageState extends State<TodoPage> {
                   child: Column(
                     children: [
                       TextFormField(
+                        autofocus: true,
+                        focusNode: titleFocusNode,
                         cursorColor: Colors.green,
                         keyboardType: TextInputType.multiline,
                         decoration: new InputDecoration(
@@ -52,7 +63,6 @@ class _TodoPageState extends State<TodoPage> {
                         onSaved: (newValue) {
                           setState(() {
                             if (newValue != null) {
-                              print('title value - ${newValue}');
                               _todo.todo.title = newValue;
                             }
                           });
@@ -75,7 +85,6 @@ class _TodoPageState extends State<TodoPage> {
                         onSaved: (newValue) {
                           setState(() {
                             if (newValue != null) {
-                              print('details value - ${newValue}');
                               _todo.todo.detail = newValue;
                             }
                           });
@@ -96,27 +105,19 @@ class _TodoPageState extends State<TodoPage> {
                 Container(
                   margin: EdgeInsets.only(top: 15),
                   child: OutlinedButton(
-                      onPressed: () {
-                        print('on save');
+                      onPressed: () async {
                         final form = _formKey.currentState;
 
                         if (form!.validate()) {
                           form.save();
-                          _todo.save();
+                          _formKey.currentState?.reset();
+                          titleFocusNode.requestFocus();
+                          await _todo.save();
+                          alertService.showAlertDialog(
+                              context, 'todo saved', '');
                         }
                       },
                       child: Text('Add')),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: OutlinedButton(
-                      onPressed: () async {
-                        List<Todo> todosData = await _todo.getTodos();
-                        for (var item in todosData) {
-                          print(item.toJson());
-                        }
-                      },
-                      child: Text('Get todos')),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 15),

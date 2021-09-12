@@ -14,11 +14,9 @@ class TodoService {
     List<String> todos = prefs.getStringList(todoPrefKey) ?? [];
 
     String todosData = jsonEncode(this.todo);
-    print('todo data - ${todosData}');
     todos.add(todosData);
 
     await prefs.setStringList(todoPrefKey, todos);
-    print('saved success');
   }
 
   Future<List<Todo>> getTodos() async {
@@ -27,9 +25,9 @@ class TodoService {
 
     List<String> todos = prefs.getStringList(todoPrefKey) ?? [];
     List<Todo> storedTodos = [];
-    for (var item in todos) {
-      storedTodos.add(new Todo.fromJson(jsonDecode(item)));
-    }
+    todos.forEach((element) {
+      storedTodos.add(new Todo.fromJson(jsonDecode(element)));
+    });
     return storedTodos;
   }
 
